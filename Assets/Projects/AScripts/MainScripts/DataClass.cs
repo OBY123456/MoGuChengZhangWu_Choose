@@ -134,7 +134,8 @@ public class SceneState
 
 public enum Order
 {
-    获取场景状态,
+    下一关,
+    返回首页,
 }
 
 public class OrderData

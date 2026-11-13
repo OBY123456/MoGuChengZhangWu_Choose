@@ -100,7 +100,7 @@ MonoBehaviour:
   englishNormalSprite: {fileID: 0}
   englishPressedSprite: {fileID: 0}
   englishDisabledSprite: {fileID: 0}
-  clickInterval: 1
+  clickInterval: 0.25
   pressedDuration: 0.25
   resetVisualOnDisable: 1
   m_OnClick:
