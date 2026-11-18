@@ -33,7 +33,7 @@ public class LevelMapPanel : MonoBehaviour
     [Tooltip("LevelImage之间链接的线，默认隐藏，第一关没有线，从第二关开始要先按照控制FillAmount从0到1(时间0.25秒)显示线，再显示LevelImage")]
     public Image[] Lines = new Image[4];
 
-    private const int LevelCount = 5;
+    public const int LevelCount = 5;
     private const float FadeDuration = 0.5f;
     private const float MarkerDuration = 0.3f;
     private const float LineDuration = 0.25f;
@@ -47,6 +47,7 @@ public class LevelMapPanel : MonoBehaviour
     private readonly Text[] labels = new Text[LevelCount];
     private Tween animation;
     private bool closing;
+    private int pendingNextLevels;
 
     public int CurrentLevel { get; private set; }
 
@@ -75,6 +76,7 @@ public class LevelMapPanel : MonoBehaviour
     private void OnEnable()
     {
         closing = false;
+        pendingNextLevels = 0;
         CurrentLevel = 1;
         Myself.alpha = 0f;
         SetInput(false);
@@ -89,6 +91,7 @@ public class LevelMapPanel : MonoBehaviour
 
     private void OnDisable()
     {
+        pendingNextLevels = 0;
         animation?.Kill();
         animation = null;
     }
@@ -110,7 +113,12 @@ public class LevelMapPanel : MonoBehaviour
 
     public void NextLevel()
     {
-        if (!isActiveAndEnabled || closing || animation != null || CurrentLevel >= LevelCount) return;
+        if (!isActiveAndEnabled || closing || CurrentLevel >= LevelCount) return;
+        if (animation != null)
+        {
+            pendingNextLevels = Mathf.Min(pendingNextLevels + 1, LevelCount - CurrentLevel);
+            return;
+        }
 
         int previous = CurrentLevel - 1;
         SetMarkerVisible(At(CurrentImage, previous), false);
@@ -136,6 +144,7 @@ public class LevelMapPanel : MonoBehaviour
     {
         if (closing) return;
         closing = true;
+        pendingNextLevels = 0;
         SetInput(false);
         animation?.Kill();
         if (!isActiveAndEnabled)
@@ -270,6 +279,14 @@ public class LevelMapPanel : MonoBehaviour
     private void FinishAnimation()
     {
         animation = null;
+        if (closing || !isActiveAndEnabled) return;
+        if (pendingNextLevels > 0 && CurrentLevel < LevelCount)
+        {
+            pendingNextLevels--;
+            NextLevel();
+            return;
+        }
+        pendingNextLevels = 0;
         SetInput(true);
     }
 

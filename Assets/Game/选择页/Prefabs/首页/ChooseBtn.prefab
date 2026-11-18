@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4277084365000908624}
   - component: {fileID: 7450117245768966598}
   - component: {fileID: 6632583370280088005}
+  - component: {fileID: 8278463946516241790}
+  - component: {fileID: 751685764652130409}
   m_Layer: 5
   m_Name: ChooseBtn
   m_TagString: Untagged
@@ -135,3 +137,48 @@ MonoBehaviour:
   m_OnClickWithPoint:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &8278463946516241790
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4068733510311778805}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6407849c9ce4141a9b34a33fbfef3d78, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &751685764652130409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4068733510311778805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19b7e2285c104f6ca47d583f3e5444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectFactor: 0.52
+  m_Width: 0.12
+  m_Rotation: 135
+  m_Softness: 1
+  m_Brightness: 0.57
+  m_Gloss: 1
+  m_EffectArea: 0
+  m_Player:
+    play: 0
+    initialPlayDelay: 0
+    duration: 1
+    loop: 0
+    loopDelay: 0
+    updateMode: 0
