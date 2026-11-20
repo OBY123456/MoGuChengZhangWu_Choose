@@ -45,7 +45,7 @@ public class LevelMapPanel : MonoBehaviour
     private readonly Dictionary<CanvasGroup, (bool Interactable, bool BlocksRaycasts)> markerInput = new Dictionary<CanvasGroup, (bool Interactable, bool BlocksRaycasts)>();
     private readonly Vector3[] labelScales = new Vector3[LevelCount];
     private readonly Text[] labels = new Text[LevelCount];
-    private Tween animation;
+    private Tween _animation;
     private bool closing;
     private int pendingNextLevels;
 
@@ -86,14 +86,14 @@ public class LevelMapPanel : MonoBehaviour
         Sequence sequence = DOTween.Sequence().SetUpdate(true);
         sequence.Append(Myself.DOFade(1f, FadeDuration).SetEase(Ease.Linear));
         AppendUnlock(sequence, 0);
-        animation = sequence.OnComplete(FinishAnimation);
+        _animation = sequence.OnComplete(FinishAnimation);
     }
 
     private void OnDisable()
     {
         pendingNextLevels = 0;
-        animation?.Kill();
-        animation = null;
+        _animation?.Kill();
+        _animation = null;
     }
 
     private void Update()
@@ -114,7 +114,7 @@ public class LevelMapPanel : MonoBehaviour
     public void NextLevel()
     {
         if (!isActiveAndEnabled || closing || CurrentLevel >= LevelCount) return;
-        if (animation != null)
+        if (_animation != null)
         {
             pendingNextLevels = Mathf.Min(pendingNextLevels + 1, LevelCount - CurrentLevel);
             return;
@@ -137,7 +137,7 @@ public class LevelMapPanel : MonoBehaviour
             return;
         }
 
-        animation = sequence.OnComplete(FinishAnimation);
+        _animation = sequence.OnComplete(FinishAnimation);
     }
 
     public void Hide(Action onHidden = null)
@@ -146,19 +146,19 @@ public class LevelMapPanel : MonoBehaviour
         closing = true;
         pendingNextLevels = 0;
         SetInput(false);
-        animation?.Kill();
+        _animation?.Kill();
         if (!isActiveAndEnabled)
         {
             FinishHiding(onHidden);
             return;
         }
 
-        animation = Myself.DOFade(0f, FadeDuration).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() => FinishHiding(onHidden));
+        _animation = Myself.DOFade(0f, FadeDuration).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() => FinishHiding(onHidden));
     }
 
     private void FinishHiding(Action onHidden)
     {
-        animation = null;
+        _animation = null;
         onHidden?.Invoke();
     }
 
@@ -278,7 +278,7 @@ public class LevelMapPanel : MonoBehaviour
 
     private void FinishAnimation()
     {
-        animation = null;
+        _animation = null;
         if (closing || !isActiveAndEnabled) return;
         if (pendingNextLevels > 0 && CurrentLevel < LevelCount)
         {
